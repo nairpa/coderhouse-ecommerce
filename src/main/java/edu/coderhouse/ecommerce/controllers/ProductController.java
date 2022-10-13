@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,7 @@ public class ProductController {
             value="/productos",
             produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Product> createProduct(@Validated @RequestBody Product product) {
+    public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
         Product producto = productService.createProduct(product);
         return ResponseEntity.created(URI.create("/productos")).body(producto);
     }
@@ -43,7 +44,7 @@ public class ProductController {
             value="/productos/{codigo}",
             produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Product> updateProduct(@Validated @RequestBody Product product, @PathVariable(name="codigo") Long codigo) {
+    public ResponseEntity<Product> updateProduct(@Valid @RequestBody Product product, @PathVariable(name="codigo") Long codigo) {
             Product updatedProduct = productService.updateProduct(product, codigo);
             return ResponseEntity.ok(updatedProduct);
     }

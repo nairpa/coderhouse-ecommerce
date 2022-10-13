@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,7 @@ public class UserController {
             consumes = { MediaType.APPLICATION_JSON_VALUE},
             produces = { MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User createdUser = userService.createUser(user);
         return ResponseEntity.created(URI.create("/users")).body(createdUser);
     }
@@ -51,6 +52,7 @@ public class UserController {
             produces = { MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<User> updateUser(
+            @Valid
             @PathVariable(name = "userId") Long userId,
             @RequestBody User user) {
         User updatedUser = userService.updateUser(user, userId);
