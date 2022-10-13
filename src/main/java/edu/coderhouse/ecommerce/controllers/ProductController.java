@@ -5,6 +5,7 @@ import edu.coderhouse.ecommerce.services.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -24,62 +25,34 @@ public class ProductController {
     }
 
     @GetMapping(value="/productos/{codigo}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Product> getProductById(@PathVariable(name="codigo") Long codigo) {
-        try {
-            Optional<Product> product = productService.getProductById(codigo);
-            return ResponseEntity.ok(product.get());
-        } catch(Exception e) {
-            if(e instanceof IllegalArgumentException) {
-                return ResponseEntity.notFound().build();
-            } else {
-                return ResponseEntity.internalServerError().build();
-            }
-        }
+    public ResponseEntity<?> getProductById(@PathVariable(name="codigo") Long codigo) {
+        Optional<Product> product = productService.getProductById(codigo);
+        return ResponseEntity.ok(product);
     }
 
     @PostMapping(
             value="/productos",
             produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        try {
-            Product producto = productService.createProduct(product);
-            return ResponseEntity.created(URI.create("/productos")).body(producto);
-        } catch(Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<Product> createProduct(@Validated @RequestBody Product product) {
+        Product producto = productService.createProduct(product);
+        return ResponseEntity.created(URI.create("/productos")).body(producto);
     }
 
     @PutMapping(
             value="/productos/{codigo}",
             produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable(name="codigo") Long codigo) {
-        try {
+    public ResponseEntity<Product> updateProduct(@Validated @RequestBody Product product, @PathVariable(name="codigo") Long codigo) {
             Product updatedProduct = productService.updateProduct(product, codigo);
             return ResponseEntity.ok(updatedProduct);
-        } catch ( Exception e) {
-            if(e instanceof IllegalArgumentException) {
-                return ResponseEntity.notFound().build();
-            } else {
-                return ResponseEntity.internalServerError().build();
-            }
-        }
     }
 
     @DeleteMapping(
             value="/productos/{codigo}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Product> deleteProduct(@PathVariable(name="codigo") Long codigo) {
-        try {
-            productService.deleteProduct(codigo);
-            return ResponseEntity.noContent().build();
-        } catch(Exception e) {
-            if(e instanceof IllegalArgumentException) {
-                return ResponseEntity.notFound().build();
-            } else {
-                return ResponseEntity.internalServerError().build();
-            }
-        }
+        productService.deleteProduct(codigo);
+        return ResponseEntity.noContent().build();
     }
 }

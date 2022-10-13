@@ -31,17 +31,9 @@ public class UserController {
             value = "/users/{userId}",
             produces = { MediaType.APPLICATION_JSON_VALUE }
     )
-    public ResponseEntity<User> getUserById(@PathVariable(name="userId") Long userId) {
-        try {
-            Optional<User> user = userService.getUserById(userId);
-            return ResponseEntity.ok(user.get());
-        } catch(Exception e) {
-            if(e instanceof IllegalArgumentException) {
-                return ResponseEntity.notFound().build();
-            } else {
-                return ResponseEntity.internalServerError().build();
-            }
-        }
+    public ResponseEntity<?> getUserById(@PathVariable(name="userId") Long userId) {
+        Optional<User> user = userService.getUserById(userId);
+        return ResponseEntity.ok(user);
     }
     @PostMapping(
             value = "/users",
@@ -49,12 +41,8 @@ public class UserController {
             produces = { MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        try {
-            User createdUser = userService.createUser(user);
-            return ResponseEntity.created(URI.create("/users")).body(createdUser);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+        User createdUser = userService.createUser(user);
+        return ResponseEntity.created(URI.create("/users")).body(createdUser);
     }
 
     @PutMapping(
@@ -65,31 +53,15 @@ public class UserController {
     public ResponseEntity<User> updateUser(
             @PathVariable(name = "userId") Long userId,
             @RequestBody User user) {
-        try {
-            User updatedUser = userService.updateUser(user, userId);
-            return ResponseEntity.ok(updatedUser);
-        } catch ( Exception e) {
-            if(e instanceof IllegalArgumentException) {
-                return ResponseEntity.notFound().build();
-            } else {
-                return ResponseEntity.internalServerError().build();
-            }
-        }
+        User updatedUser = userService.updateUser(user, userId);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping(
             value = "/users/{userId}",
             produces = { MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable(name = "userId") Long userId) {
-        try {
-            userService.deleteUser(userId);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            if(e instanceof IllegalArgumentException) {
-                return ResponseEntity.notFound().build();
-            } else {
-                return ResponseEntity.internalServerError().build();
-            }
-        }
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
     }
 }

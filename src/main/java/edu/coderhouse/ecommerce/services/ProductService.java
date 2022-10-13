@@ -1,5 +1,6 @@
 package edu.coderhouse.ecommerce.services;
 
+import edu.coderhouse.ecommerce.exceptions.NotFoundException;
 import edu.coderhouse.ecommerce.models.Product;
 import edu.coderhouse.ecommerce.models.User;
 import edu.coderhouse.ecommerce.repository.ProductRepository;
@@ -23,7 +24,7 @@ public class ProductService {
         if(product.isPresent()) {
             return product;
         } else {
-            throw new IllegalArgumentException("No existe prducto con ese código");
+            throw new NotFoundException("No existe producto con código " + codigo);
         }
     }
     public Product createProduct(Product product) {
@@ -45,7 +46,7 @@ public class ProductService {
             productRepository.save(updatedProduct.get());
             return updatedProduct.get();
         } else {
-            throw new IllegalArgumentException("No existe producto con ese código");
+            throw new NotFoundException("No existe producto con código " + codigo);
         }
     }
 
@@ -54,7 +55,7 @@ public class ProductService {
         if(product.isPresent()) {
             productRepository.deleteById(codigo);
         } else {
-            throw new IllegalArgumentException("No existe producto con ese código");
+            throw new NotFoundException("No existe producto con código " + codigo);
         }
     }
 }
