@@ -1,0 +1,33 @@
+[{
+  "_id": {
+    "$oid": "635aeb8d189c36299551f04d"
+  },
+  "codigo": 69,
+  "precio": "49.33",
+  "descripcion": "et quisquam quo",
+  "categoria": "consequatur"
+},{
+  "_id": {
+    "$oid": "635aeb90189c36299551f04e"
+  },
+  "codigo": 874,
+  "precio": "746.45",
+  "descripcion": "Possimus aspernatur libero.",
+  "categoria": "qui"
+},{
+  "_id": {
+    "$oid": "635aeb92189c36299551f04f"
+  },
+  "codigo": 745,
+  "precio": "553.58",
+  "descripcion": "Fugit sed aut incidunt rerum commodi veritatis sit aperiam. Nam eaque optio magnam. Numquam culpa ut quas consequatur ex amet. Sint repellat reiciendis neque consequatur fuga occaecati maxime in.",
+  "categoria": "incidunt"
+},{
+  "_id": {
+    "$oid": "635aeb93189c36299551f050"
+  },
+  "codigo": 170,
+  "precio": "42.14",
+  "descripcion": "Dicta optio architecto.",
+  "categoria": "consequatur"
+}]
