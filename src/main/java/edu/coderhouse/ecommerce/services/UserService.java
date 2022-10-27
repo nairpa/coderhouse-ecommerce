@@ -1,5 +1,6 @@
 package edu.coderhouse.ecommerce.services;
 
+import edu.coderhouse.ecommerce.exceptions.NotFoundException;
 import edu.coderhouse.ecommerce.models.User;
 import edu.coderhouse.ecommerce.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ public class UserService {
         if(user.isPresent()) {
             return user;
         } else {
-            throw new IllegalArgumentException("No existe usuario con ese Id");
+            throw new NotFoundException("No existe usuario con Id " + id);
         }
     }
 
@@ -48,7 +49,7 @@ public class UserService {
             userRepository.save(updatedUser.get());
             return updatedUser.get();
         } else {
-            throw new IllegalArgumentException("No existe usuario con ese Id");
+            throw new NotFoundException("No existe usuario con Id " + userId);
         }
     }
     public void deleteUser(final Long userId) {
@@ -57,7 +58,7 @@ public class UserService {
         if(user.isPresent()) {
             userRepository.deleteById(userId);
         } else {
-            throw new IllegalArgumentException("No existe usuario con ese Id");
+            throw new NotFoundException("No existe usuario con ese Id " + userId);
         }
     }
 }
