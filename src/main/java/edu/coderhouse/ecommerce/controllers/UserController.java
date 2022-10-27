@@ -3,6 +3,7 @@ package edu.coderhouse.ecommerce.controllers;
 import edu.coderhouse.ecommerce.models.User;
 import edu.coderhouse.ecommerce.services.UserService;
 import lombok.AllArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequestMapping("api")
 @RestController
@@ -32,7 +34,7 @@ public class UserController {
             value = "/users/{userId}",
             produces = { MediaType.APPLICATION_JSON_VALUE }
     )
-    public ResponseEntity<?> getUserById(@PathVariable(name="userId") Long userId) {
+    public ResponseEntity<?> getUserById(@PathVariable(name="userId") ObjectId userId) {
         Optional<User> user = userService.getUserById(userId);
         return ResponseEntity.ok(user);
     }
@@ -53,7 +55,7 @@ public class UserController {
     )
     public ResponseEntity<User> updateUser(
             @Valid
-            @PathVariable(name = "userId") Long userId,
+            @PathVariable(name = "userId") ObjectId userId,
             @RequestBody User user) {
         User updatedUser = userService.updateUser(user, userId);
         return ResponseEntity.ok(updatedUser);
@@ -62,7 +64,7 @@ public class UserController {
     @DeleteMapping(
             value = "/users/{userId}",
             produces = { MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable(name = "userId") Long userId) {
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable(name = "userId") ObjectId userId) {
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }

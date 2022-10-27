@@ -4,10 +4,12 @@ import edu.coderhouse.ecommerce.exceptions.NotFoundException;
 import edu.coderhouse.ecommerce.models.User;
 import edu.coderhouse.ecommerce.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -15,7 +17,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public Optional<User> getUserById(final long id) {
+    public Optional<User> getUserById(final ObjectId id) {
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()) {
             return user;
@@ -33,11 +35,12 @@ public class UserService {
         createdUser.setName(user.getName());
         createdUser.setUsername(user.getUsername());
         createdUser.setPhoneNumber(user.getPhoneNumber());
+        createdUser.setPassword(user.getPassword());
         userRepository.save(createdUser);
         return createdUser;
     }
 
-    public User updateUser(final User user, final Long userId) {
+    public User updateUser(final User user, final ObjectId userId) {
         Optional<User> updatedUser = userRepository.findById(userId);
 
         if(updatedUser.isPresent()) {
@@ -52,7 +55,7 @@ public class UserService {
             throw new NotFoundException("No existe usuario con Id " + userId);
         }
     }
-    public void deleteUser(final Long userId) {
+    public void deleteUser(final ObjectId userId) {
         Optional<User> user = userRepository.findById(userId);
 
         if(user.isPresent()) {

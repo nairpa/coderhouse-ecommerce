@@ -5,32 +5,31 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.UUID;
 
 
-@Entity
-@Table(name="users")
+@Document(collection="usuario")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
+    private ObjectId _id;
     @NotBlank(message = "El campo username es obligatorio")
-    @Column(name="username")
     private String username;
     @NotBlank(message = "El campo name es obligatorio")
-    @Column(name="name")
     private String name;
-    @Column(name="phoneNumber")
     private String phoneNumber;
+    @NotBlank(message = "El campo password es obligatorio")
+    private String password;
     @NotBlank(message = "El campo email es obligatorio")
-    @Pattern(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", message = "Debe ser un email válido")
-    @Column(name="email")
     private String email;
 }

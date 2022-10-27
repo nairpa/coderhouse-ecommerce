@@ -5,6 +5,7 @@ import edu.coderhouse.ecommerce.models.Product;
 import edu.coderhouse.ecommerce.models.User;
 import edu.coderhouse.ecommerce.repository.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Optional<Product> getProductById(Long codigo)  {
+    public Optional<Product> getProductById(ObjectId codigo)  {
         Optional<Product> product = productRepository.findById(codigo);
         if(product.isPresent()) {
             return product;
@@ -29,6 +30,7 @@ public class ProductService {
     }
     public Product createProduct(Product product) {
         Product createdProduct = new Product();
+        createdProduct.setCodigo(product.getCodigo());
         createdProduct.setDescripcion(product.getDescripcion());
         createdProduct.setCategoria(product.getCategoria());
         createdProduct.setPrecio(product.getPrecio());
@@ -36,7 +38,7 @@ public class ProductService {
         return createdProduct;
     }
 
-    public Product updateProduct(Product product, Long codigo) {
+    public Product updateProduct(Product product, ObjectId codigo) {
         Optional<Product> updatedProduct = productRepository.findById(codigo);
         if(updatedProduct.isPresent()) {
             updatedProduct.get().setPrecio(product.getPrecio());
@@ -50,7 +52,7 @@ public class ProductService {
         }
     }
 
-    public void deleteProduct(Long codigo) {
+    public void deleteProduct(ObjectId codigo) {
         Optional<Product> product = productRepository.findById(codigo);
         if(product.isPresent()) {
             productRepository.deleteById(codigo);

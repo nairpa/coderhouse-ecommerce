@@ -3,6 +3,7 @@ package edu.coderhouse.ecommerce.controllers;
 import edu.coderhouse.ecommerce.models.Product;
 import edu.coderhouse.ecommerce.services.ProductService;
 import lombok.AllArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +27,7 @@ public class ProductController {
     }
 
     @GetMapping(value="/productos/{codigo}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> getProductById(@PathVariable(name="codigo") Long codigo) {
+    public ResponseEntity<?> getProductById(@PathVariable(name="codigo") ObjectId codigo) {
         Optional<Product> product = productService.getProductById(codigo);
         return ResponseEntity.ok(product);
     }
@@ -44,7 +45,7 @@ public class ProductController {
             value="/productos/{codigo}",
             produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Product> updateProduct(@Valid @RequestBody Product product, @PathVariable(name="codigo") Long codigo) {
+    public ResponseEntity<Product> updateProduct(@Valid @RequestBody Product product, @PathVariable(name="codigo") ObjectId codigo) {
             Product updatedProduct = productService.updateProduct(product, codigo);
             return ResponseEntity.ok(updatedProduct);
     }
@@ -52,7 +53,7 @@ public class ProductController {
     @DeleteMapping(
             value="/productos/{codigo}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Product> deleteProduct(@PathVariable(name="codigo") Long codigo) {
+    public ResponseEntity<Product> deleteProduct(@PathVariable(name="codigo") ObjectId codigo) {
         productService.deleteProduct(codigo);
         return ResponseEntity.noContent().build();
     }
