@@ -19,7 +19,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Optional<Product> getProductById(Long codigo)  {
+    public Optional<Product> getProductById(String codigo)  {
         Optional<Product> product = productRepository.findById(codigo);
         if(product.isPresent()) {
             return product;
@@ -36,7 +36,7 @@ public class ProductService {
         return createdProduct;
     }
 
-    public Product updateProduct(Product product, Long codigo) {
+    public Product updateProduct(Product product, String codigo) {
         Optional<Product> updatedProduct = productRepository.findById(codigo);
         if(updatedProduct.isPresent()) {
             updatedProduct.get().setPrecio(product.getPrecio());
@@ -50,7 +50,7 @@ public class ProductService {
         }
     }
 
-    public void deleteProduct(Long codigo) {
+    public void deleteProduct(String codigo) {
         Optional<Product> product = productRepository.findById(codigo);
         if(product.isPresent()) {
             productRepository.deleteById(codigo);

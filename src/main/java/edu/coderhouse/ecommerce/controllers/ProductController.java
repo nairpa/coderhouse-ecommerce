@@ -26,7 +26,7 @@ public class ProductController {
     }
 
     @GetMapping(value="/productos/{codigo}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> getProductById(@PathVariable(name="codigo") Long codigo) {
+    public ResponseEntity<?> getProductById(@PathVariable(name="codigo") String codigo) {
         Optional<Product> product = productService.getProductById(codigo);
         return ResponseEntity.ok(product);
     }
@@ -44,7 +44,7 @@ public class ProductController {
             value="/productos/{codigo}",
             produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Product> updateProduct(@Valid @RequestBody Product product, @PathVariable(name="codigo") Long codigo) {
+    public ResponseEntity<Product> updateProduct(@Valid @RequestBody Product product, @PathVariable(name="codigo") String codigo) {
             Product updatedProduct = productService.updateProduct(product, codigo);
             return ResponseEntity.ok(updatedProduct);
     }
@@ -52,7 +52,7 @@ public class ProductController {
     @DeleteMapping(
             value="/productos/{codigo}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Product> deleteProduct(@PathVariable(name="codigo") Long codigo) {
+    public ResponseEntity<Product> deleteProduct(@PathVariable(name="codigo") String codigo) {
         productService.deleteProduct(codigo);
         return ResponseEntity.noContent().build();
     }
