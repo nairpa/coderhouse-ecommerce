@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -17,8 +18,11 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Document(collection="product")
 public class Product {
     @Id
+    private String id;
+    @NotNull(message = "El campo código es obligatorio")
     private String codigo;
     @NotNull(message = "El campo precio es obligatorio")
     private BigDecimal precio;

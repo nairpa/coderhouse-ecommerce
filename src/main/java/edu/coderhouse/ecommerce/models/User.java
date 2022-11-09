@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection="usuario")
+@Document(collection="user")
 public class User implements UserDetails {
     @Id
     private String id;

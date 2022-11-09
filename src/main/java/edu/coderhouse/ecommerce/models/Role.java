@@ -13,6 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Document(collection="role")
 public class Role {
-    private ObjectId _id;
+    private String id;
     private String name;
 }
