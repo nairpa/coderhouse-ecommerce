@@ -8,13 +8,13 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "carrito")
+@Document(collection = "cart")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cart {
     @Id
-    private ObjectId _id;
+    private String id;
     private int cantidad;
 }

@@ -16,21 +16,26 @@ import java.util.List;
 public class CartController {
     private final CartService cartService;
 
-    @GetMapping(value="/carrito", produces={MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value="/cart/{userId}", produces={MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<Cart>> getCart() {
         List<Cart> carts = this.cartService.getCart();
         return ResponseEntity.ok(carts);
     }
 
-    @PutMapping(value="/carrito/{id}", produces={MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Cart> updateCart(@PathVariable(name="id")ObjectId id, Cart cart) {
+    @PostMapping(value="/cart", produces={MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> createCart() {
+        return ResponseEntity.ok("");
+    }
+
+    @PutMapping(value="/cart/{userId}", produces={MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Cart> updateCart(@PathVariable(name="id")String id, Cart cart) {
         Cart updateCart = this.cartService.updateCart(id, cart);
         return ResponseEntity.ok(updateCart);
     }
 
-    @DeleteMapping(value="/carrito/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> deleteCart(@PathVariable(name="id")ObjectId id) {
-        this.cartService.deleteCart(id);
+    @DeleteMapping(value="/cart", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> deleteCart() {
+        this.cartService.deleteCart();
         return ResponseEntity.noContent().build();
     }
 }

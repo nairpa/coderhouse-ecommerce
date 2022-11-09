@@ -4,7 +4,6 @@ import edu.coderhouse.ecommerce.exceptions.NotFoundException;
 import edu.coderhouse.ecommerce.models.Cart;
 import edu.coderhouse.ecommerce.repository.CartRepository;
 import lombok.AllArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class CartService {
         return this.cartRepository.findAll();
     }
 
-    public Cart updateCart(ObjectId id, Cart cart) {
+    public Cart updateCart(String id, Cart cart) {
         Optional<Cart> updateCart = this.cartRepository.findById(id);
         if(updateCart.isPresent()) {
             updateCart.get().setCantidad(cart.getCantidad());
@@ -31,12 +30,7 @@ public class CartService {
         }
     }
 
-    public void deleteCart(ObjectId id) {
-        Optional<Cart> deleteCart = this.cartRepository.findById(id);
-        if(deleteCart.isPresent()) {
-            this.cartRepository.deleteById(id);
-        } else {
-            throw new NotFoundException("No existe producto en el carrito para el id" + id);
-        }
+    public void deleteCart() {
+        this.cartRepository.deleteAll();
     }
 }

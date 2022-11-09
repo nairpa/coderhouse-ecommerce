@@ -5,7 +5,6 @@ import edu.coderhouse.ecommerce.services.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,20 +18,20 @@ import java.util.Optional;
 public class ProductController {
     private final ProductService productService;
 
-    @GetMapping(value="/productos", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value="/product", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<Product>> getProducts() {
         List<Product> products = productService.getProducts();
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping(value="/productos/{codigo}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> getProductById(@PathVariable(name="codigo") String codigo) {
-        Optional<Product> product = productService.getProductById(codigo);
+    @GetMapping(value="/product/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> getProductById(@PathVariable(name="id") String id) {
+        Optional<Product> product = productService.getProductById(id);
         return ResponseEntity.ok(product);
     }
 
     @PostMapping(
-            value="/productos",
+            value="/product",
             produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
@@ -41,19 +40,19 @@ public class ProductController {
     }
 
     @PutMapping(
-            value="/productos/{codigo}",
+            value="/product/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Product> updateProduct(@Valid @RequestBody Product product, @PathVariable(name="codigo") String codigo) {
-            Product updatedProduct = productService.updateProduct(product, codigo);
+    public ResponseEntity<Product> updateProduct(@Valid @RequestBody Product product, @PathVariable(name="id") String id) {
+            Product updatedProduct = productService.updateProduct(product, id);
             return ResponseEntity.ok(updatedProduct);
     }
 
     @DeleteMapping(
-            value="/productos/{codigo}",
+            value="/product/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Product> deleteProduct(@PathVariable(name="codigo") String codigo) {
-        productService.deleteProduct(codigo);
+    public ResponseEntity<Product> deleteProduct(@PathVariable(name="id") String id) {
+        productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
 }
