@@ -1,6 +1,6 @@
 package edu.coderhouse.ecommerce.security;
 
-import edu.coderhouse.ecommerce.models.User;
+import edu.coderhouse.ecommerce.models.documents.User;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;

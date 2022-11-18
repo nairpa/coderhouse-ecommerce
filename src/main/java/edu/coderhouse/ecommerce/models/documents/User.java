@@ -1,4 +1,4 @@
-package edu.coderhouse.ecommerce.models;
+package edu.coderhouse.ecommerce.models.documents;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

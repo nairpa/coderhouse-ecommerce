@@ -1,6 +1,6 @@
 package edu.coderhouse.ecommerce.services;
 
-import edu.coderhouse.ecommerce.models.User;
+import edu.coderhouse.ecommerce.models.documents.User;
 import edu.coderhouse.ecommerce.models.request.LoginRequest;
 import edu.coderhouse.ecommerce.models.request.RegisterRequest;
 import edu.coderhouse.ecommerce.models.response.TokenResponse;

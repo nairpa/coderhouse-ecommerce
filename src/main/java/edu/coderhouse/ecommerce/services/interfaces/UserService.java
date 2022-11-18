@@ -1,9 +1,6 @@
 package edu.coderhouse.ecommerce.services.interfaces;
 
-import edu.coderhouse.ecommerce.models.User;
-import edu.coderhouse.ecommerce.models.request.LoginRequest;
-import edu.coderhouse.ecommerce.models.request.RegisterRequest;
-import edu.coderhouse.ecommerce.models.response.TokenResponse;
+import edu.coderhouse.ecommerce.models.documents.User;
 
 import java.util.List;
 import java.util.Optional;

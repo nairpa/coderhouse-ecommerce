@@ -1,6 +1,6 @@
 package edu.coderhouse.ecommerce.controllers;
 
-import edu.coderhouse.ecommerce.models.User;
+import edu.coderhouse.ecommerce.models.documents.User;
 import edu.coderhouse.ecommerce.repository.UserRepository;
 import edu.coderhouse.ecommerce.security.JwtUtils;
 import edu.coderhouse.ecommerce.services.UserServiceImpl;
