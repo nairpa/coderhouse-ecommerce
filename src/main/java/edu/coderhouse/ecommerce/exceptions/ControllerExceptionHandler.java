@@ -18,6 +18,30 @@ import java.util.Map;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
+    @ExceptionHandler(value = UserExistsException.class)
+    public ResponseEntity<ErrorMessage> userExistsException(UserExistsException e, WebRequest request) {
+        ErrorMessage message = new ErrorMessage(
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDate.now(),
+                e.getMessage(),
+                request.getDescription(false)
+        );
+
+        return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = AuthErrorException.class)
+    public ResponseEntity<ErrorMessage> authErrorException(AuthErrorException e, WebRequest request) {
+        ErrorMessage message = new ErrorMessage(
+                HttpStatus.UNAUTHORIZED.value(),
+                LocalDate.now(),
+                e.getMessage(),
+                request.getDescription(false)
+        );
+
+        return new ResponseEntity<ErrorMessage>(message, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<ErrorMessage> notFoundException(NotFoundException e, WebRequest request) {
         ErrorMessage message = new ErrorMessage(

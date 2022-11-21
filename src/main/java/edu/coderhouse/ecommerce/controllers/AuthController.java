@@ -1,11 +1,10 @@
 package edu.coderhouse.ecommerce.controllers;
 
-import edu.coderhouse.ecommerce.models.User;
+import edu.coderhouse.ecommerce.models.documents.User;
 import edu.coderhouse.ecommerce.models.request.LoginRequest;
 import edu.coderhouse.ecommerce.models.request.RegisterRequest;
 import edu.coderhouse.ecommerce.models.response.TokenResponse;
 import edu.coderhouse.ecommerce.services.AuthServiceImpl;
-import edu.coderhouse.ecommerce.services.interfaces.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,6 +1,8 @@
 package edu.coderhouse.ecommerce.services;
 
-import edu.coderhouse.ecommerce.models.User;
+import edu.coderhouse.ecommerce.exceptions.AuthErrorException;
+import edu.coderhouse.ecommerce.exceptions.UserExistsException;
+import edu.coderhouse.ecommerce.models.documents.User;
 import edu.coderhouse.ecommerce.models.request.LoginRequest;
 import edu.coderhouse.ecommerce.models.request.RegisterRequest;
 import edu.coderhouse.ecommerce.models.response.TokenResponse;
@@ -16,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,11 +33,13 @@ public class AuthServiceImpl {
     private final PasswordEncoder passwordEncoder;
     public Optional<User> signupUser(final RegisterRequest register) {
         if(userRepository.existsByUsername(register.getUsername())) {
-            return Optional.empty();
+            log.error("El usuario ya existe" + LocalDate.now());
+            throw new UserExistsException("El usuario ya existe");
         };
 
         if(userRepository.existsByEmail(register.getEmail())) {
-            return Optional.empty();
+            log.error("El usuario ya existe" + LocalDate.now());
+            throw new UserExistsException("El usuario ya existe");
         }
 
         User user = new User();
@@ -44,6 +49,7 @@ public class AuthServiceImpl {
         user.setPhoneNumber(register.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(register.getPassword()));
         userRepository.save(user);
+        log.info("Usuario creado existosamente" + LocalDate.now());
         return Optional.of(user);
     }
 
@@ -53,10 +59,8 @@ public class AuthServiceImpl {
         User user = (User) authentication.getPrincipal();
         try {
             String jwt = jwtUtils.generateJwtToken(authentication);
-            List<String> roles = user.getAuthorities()
-                    .stream()
-                    .map(role -> role.getAuthority())
-                    .collect(Collectors.toList());
+
+            log.info("Usuario autenticado existosamente" + LocalDate.now());
             return Optional.of(new TokenResponse(
                     jwt,
                     user.getId(),
@@ -65,8 +69,7 @@ public class AuthServiceImpl {
             ));
         } catch(UnsupportedEncodingException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());
+            throw new AuthErrorException("Usuario no autorizado");
         }
-
-        return Optional.empty();
     }
 }
