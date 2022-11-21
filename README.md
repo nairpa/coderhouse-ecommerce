@@ -27,5 +27,6 @@ Proyecto realizado para el curso de coderhose de Java con Spring Boot. Conforma 
 Configuración en ```application.properties```:
 ```coderhouse.app.jwtSecret``` clave secreta que emplea JWT para la conformación del token.
 ```coderhouse.app.jwtExpirationMs``` tiempo de expiración del token creado por JWT.
-Configuración tomada del config server en ```https://github.com/nairpa/config-coderhouse-ecommerce/blob/main/config-main.yml```
-Repositorio del config server ```https://github.com/nairpa/config-server```
+Configuración tomada del config server en [config file](https://github.com/nairpa/config-coderhouse-ecommerce/blob/main/config-main.yml)
+Repositorio del config server [config server](https://github.com/nairpa/config-server)
+Colección en postman del proyecto [colección postman](https://www.postman.com/cryosat-administrator-52756468/workspace/coderhouse/collection/15586413-a187de2f-9ce8-4b22-a5bd-2fcba02c0f3a?action=share&creator=15586413), recordar settear environment en coderhouse.

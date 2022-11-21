@@ -21,7 +21,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserController {
     private final UserServiceImpl userServiceImpl;
-    
+
     @GetMapping(
             value = "/users",
             produces = { MediaType.APPLICATION_JSON_VALUE }
