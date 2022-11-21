@@ -7,14 +7,17 @@ import edu.coderhouse.ecommerce.models.response.ProductResponse;
 import edu.coderhouse.ecommerce.repository.ProductRepository;
 import edu.coderhouse.ecommerce.services.interfaces.ProductService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final SequenceGeneratorImpl sequenceGenerator;
@@ -25,20 +28,22 @@ public class ProductServiceImpl implements ProductService {
     public Optional<ProductResponse> getProductById(Long code)  {
         Optional<Product> product = productRepository.findByCode(code);
         if(product.isPresent()) {
+            log.info("El producto fue encontrado exitosamente" + LocalDate.now());
             return Optional.of(ProductResponse.builder()
                     .precio(product.get().getPrecio())
-                    .cantidad(product.get().getCantidad())
                     .descripcion(product.get().getDescripcion())
                     .category(product.get().getCategory())
                     .code(product.get().getCode())
                     .build());
         } else {
+            log.error("No existe producto con codigo" + code + LocalDate.now());
             throw new NotFoundException("No existe producto con código " + code);
         }
     }
 
     public List<ProductResponse> getProductsByCategory(String category) {
         List<Product> products = productRepository.findByCategory(category);
+        log.info("Los productos fueron encontrados exitosamente" + LocalDate.now());
         return products
                 .stream()
                 .map(product ->
@@ -47,7 +52,6 @@ public class ProductServiceImpl implements ProductService {
                                 .code(product.getCode())
                                 .category(product.getCategory())
                                 .descripcion(product.getDescripcion())
-                                .cantidad(product.getCantidad())
                                 .precio(product.getPrecio())
                                 .build()
                 )
@@ -58,16 +62,14 @@ public class ProductServiceImpl implements ProductService {
                 .code(sequenceGenerator.generateSequence(Product.SEQUENCE_NAME))
                 .category(productRequest.getCategory())
                 .descripcion(productRequest.getDescripcion())
-                .cantidad(productRequest.getCantidad())
                 .precio(productRequest.getPrecio())
                 .build();
         productRepository.save(product);
-
+        log.info("El producto creado exitosamente" + LocalDate.now());
         ProductResponse productResponse = ProductResponse.builder()
                 .code(product.getCode())
                 .precio(product.getPrecio())
                 .descripcion(product.getDescripcion())
-                .cantidad(product.getCantidad())
                 .category(product.getCategory())
                 .build();
         return productResponse;
@@ -81,16 +83,16 @@ public class ProductServiceImpl implements ProductService {
             updatedProduct.get().setCategory(product.getCategory());
 
             productRepository.save(updatedProduct.get());
-
+            log.info("El producto fue actualizado exitosamente" + LocalDate.now());
             ProductResponse productResponse = ProductResponse.builder()
                     .precio(product.getPrecio())
                     .descripcion(product.getDescripcion())
                     .code(updatedProduct.get().getCode())
                     .category(product.getCategory())
-                    .cantidad(product.getCantidad())
                     .build();
             return productResponse;
         } else {
+            log.error("El producto no fue encontrado" + LocalDate.now());
             throw new NotFoundException("No existe producto con código " + code);
         }
     }
@@ -98,8 +100,10 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Long code) {
         Optional<Product> product = productRepository.findByCode(code);
         if(product.isPresent()) {
+            log.info("El producto fue encontrado exitosamente" + LocalDate.now());
             productRepository.deleteById(product.get().getId());
         } else {
+            log.error("El producto no fue encontrado" + LocalDate.now());
             throw new NotFoundException("No existe producto con código " + code);
         }
     }

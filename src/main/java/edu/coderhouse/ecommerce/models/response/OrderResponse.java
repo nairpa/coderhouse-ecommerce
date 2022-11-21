@@ -2,18 +2,21 @@ package edu.coderhouse.ecommerce.models.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.coderhouse.ecommerce.models.documents.CartItem;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CartResponse {
+public class OrderResponse {
+    private Double total;
+    private String email;
     private List<CartItem> items;
-    private LocalDate date;
-    private String address;
-    private String userId;
+    private LocalDate purchaseDate;
+    private Long orderNumber;
 }

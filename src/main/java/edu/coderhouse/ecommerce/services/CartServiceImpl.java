@@ -1,9 +1,8 @@
 package edu.coderhouse.ecommerce.services;
 
 import edu.coderhouse.ecommerce.exceptions.NotFoundException;
-import edu.coderhouse.ecommerce.models.documents.Cart;
-import edu.coderhouse.ecommerce.models.documents.CartItem;
-import edu.coderhouse.ecommerce.models.documents.Product;
+import edu.coderhouse.ecommerce.models.documents.*;
+import edu.coderhouse.ecommerce.models.enums.StateEnum;
 import edu.coderhouse.ecommerce.models.request.CartItemRequest;
 import edu.coderhouse.ecommerce.models.request.CartRequest;
 import edu.coderhouse.ecommerce.models.response.CartResponse;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
-    private final SequenceGeneratorImpl sequenceGenerator;
 
     public List<Cart> getCarts() {
         return cartRepository.findAll();
@@ -35,9 +33,9 @@ public class CartServiceImpl implements CartService {
     public CartResponse createCart(CartRequest cart) {
         Cart createCart = Cart.builder()
                 .date(LocalDate.now())
-                .orderNumber(sequenceGenerator.generateSequence(Cart.SEQUENCE_NAME))
                 .address(cart.getAddress())
                 .items(new ArrayList<>())
+                .userId(cart.getUserId())
                 .build();
 
         cartRepository.save(createCart);
@@ -45,41 +43,69 @@ public class CartServiceImpl implements CartService {
                 .date(createCart.getDate())
                 .items(createCart.getItems())
                 .address(createCart.getAddress())
-                .orderNumber(createCart.getOrderNumber())
+                .userId(createCart.getUserId())
                 .build();
-
+        log.info("Carrito creado existosamente" + LocalDate.now());
         return cartResponse;
     }
-
-    public void deleteCart(Long cartId) {
-        Optional<Cart> cart = cartRepository.findCartByOrderNumber(cartId);
+    public void deleteCart(String userId) {
+        Optional<Cart> cart = cartRepository.findByUserId(userId);
         if(cart.isPresent()) {
-            cartRepository.deleteByOrderNumber(cartId);
+            cartRepository.deleteByUserId(userId);
+            log.info("Carrito eliminado existosamente" + LocalDate.now());
         } else {
-            throw new NotFoundException("No existe carrito con id" + cartId);
+            log.error("No existe carrito para usuario" + userId + LocalDate.now());
+            throw new NotFoundException("No existe carrito con para el usuario de id" + userId);
         }
     }
 
-    public Cart getCartByOrderNumber(Long orderId) {
-        Optional<Cart> cart = cartRepository.findCartByOrderNumber(orderId);
+    public CartResponse getCartByUser(String userId) {
+        Optional<Cart> cart = cartRepository.findByUserId(userId);
+
         if(cart.isPresent()) {
-            return cart.get();
+            log.info("Carrito encontrado existosamente" + LocalDate.now());
+            return CartResponse.builder()
+                    .items(cart.get().getItems())
+                    .date(cart.get().getDate())
+                    .address(cart.get().getAddress())
+                    .build();
         } else {
-            throw new NotFoundException("No existe carrito con orden de id " + orderId);
+            log.error("No existe carrito para usuario" + userId + LocalDate.now());
+            throw new NotFoundException("No existe carrito para el usuario de id " + userId);
         }
     }
 
-    public List<CartItem> getCartProducts(Long orderId) {
-        Optional<Cart> cart = cartRepository.findCartByOrderNumber(orderId);
+    public List<CartItem> getCartProducts(String userId) {
+        Optional<Cart> cart = cartRepository.findByUserId(userId);
         if(cart.isPresent()) {
+            log.info("Productos del carrito encontrados exitosamente" + LocalDate.now());
             return cart.get().getItems();
         } else {
-            throw new NotFoundException("No existe carrito con id " + orderId);
+            log.error("No existe carrito para usuario" + userId + LocalDate.now());
+            throw new NotFoundException("No existe carrito para el usuario de id " + userId);
         }
     }
 
-    public void addProductToCart(Long orderId, Long productId, CartItemRequest item) {
-        Optional<Cart> cart = cartRepository.findCartByOrderNumber(orderId);
+    public Optional<CartItem> getCartProductById(String userId, Long productId) {
+        Optional<Cart> cart = cartRepository.findByUserId(userId);
+        Optional<CartItem> cartItem = Optional.empty();
+
+        if(cart.isPresent()) {
+            for(CartItem c : cart.get().getItems()) {
+                if(c.getCode().equals(productId)) {
+                    cartItem = Optional.of((c));
+                }
+            }
+            log.info("Producto en el carrito encontrado exitosamente" + LocalDate.now());
+            return cartItem;
+        } else {
+            log.error("No existe carrito para usuario" + userId + LocalDate.now());
+            throw new NotFoundException("No existe carrito para el usuario de id " + userId);
+        }
+    }
+
+    public void addProductToCart(String userId, Long productId, CartItemRequest item) {
+        Optional<Cart> cart = cartRepository.findByUserId(userId);
         Optional<Product> product = productRepository.findByCode(productId);
         if(cart.isPresent() && product.isPresent()) {
             if(checkProductNotExistsOnCart(product.get().getCode(), cart.get())) {
@@ -89,24 +115,27 @@ public class CartServiceImpl implements CartService {
                                         .build();
 
                 cart.get().getItems().add(cartItem);
-                log.info(item.getQuantity().toString());
+                log.info("Producto agregado correctamente al carrito" + LocalDate.now());
                 cartRepository.save(cart.get());
             } else {
                 Optional<CartItem> cartItem = getCartItemByProductCode(product.get().getCode(), cart.get().getItems());
                 if(cartItem.isPresent()) {
                     cartItem.get().setQuantity(cartItem.get().getQuantity() + item.getQuantity());
                     cartRepository.save(cart.get());
+                    log.info("Producto actualizado correctamente" + LocalDate.now());
                 }
             };
         } else if(cart.isEmpty()) {
-            throw new NotFoundException("No existe carrito con orden de id " + orderId);
+            log.error("No existe carrito para usuario" + userId + LocalDate.now());
+            throw new NotFoundException("No existe carrito para el usuario de id " + userId);
         } else if(product.isEmpty()) {
+            log.error("No existe producto para ese codigo" + productId + LocalDate.now());
             throw new NotFoundException("No existe producto con ese codigo ");
         }
     }
 
-    public void deleteProductOnCart(Long orderId, Long code) {
-        Optional<Cart> cart = cartRepository.findCartByOrderNumber(orderId);
+    public void deleteProductOnCart(String userId, Long code) {
+        Optional<Cart> cart = cartRepository.findByUserId(userId);
         Optional<Product> product = productRepository.findByCode(code);
 
         if(cart.isPresent() && product.isPresent()) {
@@ -118,6 +147,7 @@ public class CartServiceImpl implements CartService {
                         .filter(item -> !item.getCode().equals(cartItem.get().getCode()))
                         .collect(Collectors.toList());
                 cart.get().setItems(items);
+                log.info("Producto eliminado correctamente del carrito" + LocalDate.now());
                 cartRepository.save(cart.get());
             }
         }

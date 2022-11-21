@@ -1,5 +1,6 @@
 package edu.coderhouse.ecommerce.models.request;
 
+import edu.coderhouse.ecommerce.models.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Getter
 @Setter

@@ -2,17 +2,14 @@ package edu.coderhouse.ecommerce.models.request;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CartRequest {
-    @NotBlank
+public class OrderRequest {
     @NotNull
-    private String address;
     private String userId;
 }

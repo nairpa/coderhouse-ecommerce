@@ -21,8 +21,7 @@ public class Product {
     @Transient
     public static final String SEQUENCE_NAME = "code";
     private Long code;
-    private BigDecimal precio;
+    private Double precio;
     private String descripcion;
     private String category;
-    private int cantidad;
 }

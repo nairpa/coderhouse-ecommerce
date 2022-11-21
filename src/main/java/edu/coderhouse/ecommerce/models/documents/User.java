@@ -35,7 +35,6 @@ public class User implements UserDetails {
     private Collection<Role> roles = new ArrayList<>();
     @JsonIgnore
     private String password;
-
     private Collection<? extends GrantedAuthority> authorities;
 
     public User(String id, String username, String email, String password,
@@ -50,7 +49,7 @@ public class User implements UserDetails {
     public static User build(User user) {
         List<GrantedAuthority> authorities = user.getRoles()
                 .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .map(role -> new SimpleGrantedAuthority(role.getName().toString()))
                 .collect(Collectors.toList());
 
         return new User(

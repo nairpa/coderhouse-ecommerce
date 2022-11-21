@@ -21,11 +21,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserController {
     private final UserServiceImpl userServiceImpl;
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtils jwtUtils;
-    private final UserRepository userRepository;
-
-    private final PasswordEncoder passwordEncoder;
+    
     @GetMapping(
             value = "/users",
             produces = { MediaType.APPLICATION_JSON_VALUE }
@@ -43,33 +39,6 @@ public class UserController {
         Optional<User> user = userServiceImpl.getUserById(userId);
         return ResponseEntity.ok(user);
     }
-    /*@PostMapping(
-            value = "/auth/signup",
-            consumes = { MediaType.APPLICATION_JSON_VALUE},
-            produces = { MediaType.APPLICATION_JSON_VALUE}
-    )
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest register) {
-        Optional<User> registeredUser = userServiceImpl.signupUser(register);
-        if(registeredUser.isPresent()) {
-            return ResponseEntity.ok().body("Usuario registrado correctamente");
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
-    }*/
-
-    /*@PostMapping(
-            value = "/auth/signin",
-            consumes = { MediaType.APPLICATION_JSON_VALUE},
-            produces = { MediaType.APPLICATION_JSON_VALUE}
-    )
-    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginRequest login) throws UnsupportedEncodingException {
-        Optional<TokenResponse> loginUser = userServiceImpl.signinUser(login);
-        if(loginUser.isPresent()) {
-            return ResponseEntity.ok(loginUser);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
-    }*/
     @PutMapping(
             value = "/users/{userId}",
             consumes = { MediaType.APPLICATION_JSON_VALUE},

@@ -11,12 +11,11 @@ import java.math.BigDecimal;
 @Builder
 public class ProductRequest {
     @NotNull(message = "El campo precio es obligatorio")
-    private BigDecimal precio;
+    private Double precio;
     @NotNull(message = "El campo descripción es obligatorio")
     @NotBlank(message = "El campo descripción es obligatorio")
     private String descripcion;
     @NotNull(message = "El campo categoria es obligatorio")
     @NotBlank(message = "El campo categoria es obligatorio")
     private String category;
-    private int cantidad;
 }

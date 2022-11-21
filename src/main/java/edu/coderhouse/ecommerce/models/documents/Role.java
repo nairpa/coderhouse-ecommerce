@@ -1,18 +1,13 @@
 package edu.coderhouse.ecommerce.models.documents;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.bson.types.ObjectId;
+import edu.coderhouse.ecommerce.models.enums.RoleEnum;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Document(collection="role")
 public class Role {
-    private String id;
-    private String name;
+    @Id
+    String id;
+    RoleEnum name;
 }

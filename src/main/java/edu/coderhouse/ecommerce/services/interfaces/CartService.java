@@ -24,31 +24,37 @@ public interface CartService {
     public CartResponse createCart(CartRequest cart);
 
     /***
-     * Elimina un carrito según su id.
-     * @param orderNumber
+     * Devuelve el carrito segun el usuario.
+     * @param userId
+     * @return
      */
-    public void deleteCart(Long orderNumber);
+    CartResponse getCartByUser(String userId);
+    /***
+     * Elimina un carrito según su id.
+     * @param cartId
+     */
+    public void deleteCart(String cartId);
 
     /***
      * Busca los productos de un carrito según su id.
-     * @param orderNumber
+     * @param userId
      * @return una lista de productos.
      */
-    public List<CartItem> getCartProducts(Long orderNumber);
+    public List<CartItem> getCartProducts(String userId);
 
     /**
      * Agrega un nuevo producto al carrito.
-     * @param orderNumber
+     * @param productId
      * @param item
      */
-    public void addProductToCart(Long orderNumber, Long productId, CartItemRequest item);
+    public void addProductToCart(String userId, Long productId, CartItemRequest item);
 
     /***
      * Elimina un producto en el carrito.
-     * @param orderNumber
+     * @param cartId
      * @param code
      */
-    public void deleteProductOnCart(Long orderNumber, Long code);
+    public void deleteProductOnCart(String cartId, Long code);
 
     /***
      * Verifica que el producto no exista en el carrito
